@@ -22,7 +22,7 @@ def recommend_movies(imdb_title_id: str, limit: int = 10):
 
     try:
         
-        if imdb_title_id not in movie_data['imdb_title_id']:
+        if imdb_title_id not in movie_data['imdb_title_id'].values:
             raise HTTPException(status_code=404, detail="Entered movie is not found!")
 
         if limit >= 20:
@@ -61,6 +61,7 @@ def recommend_movies(imdb_title_id: str, limit: int = 10):
             raise e
     
     except Exception as e:
+        print("Exception", e)
         raise HTTPException(status_code=500, detail="Something went wrong!")
 
     
