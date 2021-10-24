@@ -1,4 +1,5 @@
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from sklearn.metrics.pairwise import cosine_similarity
 import pandas as pd
 import pickle
@@ -7,13 +8,22 @@ from utils import fetch_movie_details
 
 app = FastAPI()
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_methods=["GET"],
+)
+
 movie_data = pd.read_csv("./data/movie_data_final.csv")
 
 
 
 @app.get("/")
 def read_root():
-    return {"MoRe": "Welcome to MoRe API"}
+    return {
+        "MoRe": "Welcome to MoRe API", 
+        "Try It Out": "Head onto /docs to try the api out"
+        }
 
 
 
