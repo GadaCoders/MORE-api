@@ -14,6 +14,8 @@ app.add_middleware(
     allow_methods=["GET"],
 )
 
+print("STARTING")
+
 movie_data = pd.read_csv("./data/movie_data_final.csv")
 
 
@@ -25,7 +27,22 @@ def read_root():
         "Try It Out": "Head onto /docs to try the api out"
         }
 
+@app.get("/get-movies-from-title/{title}")
+def get_movies_from_title(title: str):
+    try:
 
+        titles_ids = []
+        for i in range(movie_data.shape[0]):
+            movie = movie_data.iloc[i]
+            if title.lower() in str(movie['title']).lower():
+                titles_ids.append({'imdb_title_id': movie['imdb_title_id'],'title': movie['title']})
+        
+        return titles_ids
+
+    except Exception as e:
+        print(e)
+        return e
+    
 
 @app.get("/recommend-movie/{imdb_title_id}")
 def recommend_movies(imdb_title_id: str, limit: int = 10):
@@ -48,6 +65,7 @@ def recommend_movies(imdb_title_id: str, limit: int = 10):
 
         similarities_sorted = sorted(list(enumerate(similarities[0])), reverse=True, key=lambda x: x[1])[1:limit+1]
 
+
         result = []
         for index, sim in similarities_sorted:
             movie = movie_data.iloc[index]
@@ -56,8 +74,11 @@ def recommend_movies(imdb_title_id: str, limit: int = 10):
             
             details = fetch_movie_details(id)
 
+
             if details:
                 result.append(details) 
+
+            break
         
 
         return {"result" : result}

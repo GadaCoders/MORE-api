@@ -6,18 +6,24 @@ def fetch_movie_details(imdb_title_id):
 
     POSTER_PATH = "https://image.tmdb.org/t/p/w500"
     
-    movie_data  = requests.get(URL).json()
+    tmdb_movie_data  = requests.get(URL).json()
 
-    if not movie_data:
+
+    if tmdb_movie_data.get("success") == False:
         return None
+    
+    print(tmdb_movie_data)
+    
 
     return {
         "imdb_title_id": imdb_title_id,
-        "title": movie_data["title"] if movie_data["title"] != None else '',
-        "original_title": movie_data["original_title"] if movie_data["original_title"] != None else '',
-        "poster_path": POSTER_PATH + movie_data["poster_path"] if movie_data["poster_path"] != None else '',
-        "backdrop_path": POSTER_PATH + movie_data["backdrop_path"] if movie_data["backdrop_path"] != None else '',
-        "genres": movie_data["genres"] if movie_data["genres"] != None else '',
-        "overview": movie_data["overview"] if movie_data["overview"] != None else '',
-        "release_date": movie_data['release_date'] if movie_data["release_date"] != None else ''
+        "title": tmdb_movie_data["title"] if tmdb_movie_data["title"] != None else '',
+        "original_title": tmdb_movie_data["original_title"] if tmdb_movie_data["original_title"] != None else '',
+        "poster_path": POSTER_PATH + tmdb_movie_data["poster_path"] if tmdb_movie_data["poster_path"] != None else '',
+        "backdrop_path": POSTER_PATH + tmdb_movie_data["backdrop_path"] if tmdb_movie_data["backdrop_path"] != None else '',
+        "genres": tmdb_movie_data["genres"] if tmdb_movie_data["genres"] != None else '',
+        "overview": tmdb_movie_data["overview"] if tmdb_movie_data["overview"] != None else '',
+        "release_date": tmdb_movie_data['release_date'] if tmdb_movie_data["release_date"] != None else '',
+        "tagline": tmdb_movie_data['tagline'] if tmdb_movie_data["tagline"] != None else '',
+        "vote_average": tmdb_movie_data["vote_average"] if tmdb_movie_data["vote_average"] != None else ''
     }
