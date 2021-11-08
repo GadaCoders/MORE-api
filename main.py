@@ -78,7 +78,6 @@ def recommend_movies(imdb_title_id: str, limit: int = 10):
             if details:
                 result.append(details) 
 
-            break
         
 
         return {"result" : result}
